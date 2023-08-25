@@ -62,6 +62,8 @@ def password(length=8):
                 break
     return(password)
 
+def title(title :str):
+    os.system(f'title {title}')
 
 if __name__ == '__main__':
     write("Hello there !")
