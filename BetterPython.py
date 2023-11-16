@@ -7,6 +7,7 @@ from colorama import init, Fore, Back, Style
 from threading import Thread
 from typing import Callable
 
+
 init()
 
 def commonList(list1,list2,returnCommon=False):
@@ -66,6 +67,9 @@ def password(length=8):
 
 def title(title :str):
     os.system(f'title {title}')
+
+def windowSize(lenght,height):
+    os.system(f'mode con: cols={lenght} lines={height}')
 
 if __name__ == '__main__':
     write("Hello there !")
