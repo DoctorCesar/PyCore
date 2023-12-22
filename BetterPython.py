@@ -3,6 +3,7 @@ import sys
 import time
 import string
 import secrets
+import inspect
 from colorama import init, Fore, Back, Style
 from threading import Thread
 from typing import Callable
@@ -70,6 +71,15 @@ def title(title :str):
 
 def windowSize(lenght,height):
     os.system(f'mode con: cols={lenght} lines={height}')
+
+def getFunctionParameters():
+    calling_frame = inspect.currentframe().f_back
+    name_parent_function = calling_frame.f_code.co_name
+    parameters = inspect.signature(calling_frame.f_globals[name_parent_function]).parameters
+    parameters_value = {name: calling_frame.f_locals[name] for name in parameters}
+    return parameters_value
+
+
 
 if __name__ == '__main__':
     write("Hello there !")
