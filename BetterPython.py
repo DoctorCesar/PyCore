@@ -79,6 +79,16 @@ def getFunctionParameters():
     parameters_value = {name: calling_frame.f_locals[name] for name in parameters}
     return parameters_value
 
+def pnumber(n,roundPrecision:int=3,valueLetter:dict={1000:'K',10**6:'M',10**9:'B',10**12:'T'}) -> str:
+    if not (type(n) == float or type(n) == int):
+        raise TypeError('Parameter should be a float or an integer')
+    toReturn = ''
+    for key,value in valueLetter.items():
+        if n >= key:
+            toReturn = f'{round(n/key,roundPrecision)}{value}'
+        else:
+            break
+    return toReturn
 
 
 if __name__ == '__main__':
