@@ -10,13 +10,20 @@ from colorama import init, Fore, Back, Style
 init()
 
 def commonList(list1,list2,returnCommon=False):
+    common = []
     for position in list1:
         if position in list2:    
             if returnCommon:
-                return(True,position)
+                common.append(position)
             else:
                 return(True)
-    return(False)
+    if returnCommon:
+        if common != []:
+            return(True,common)
+        else:
+            return(False,None)
+    else:    
+        return(False)
 
 def clear():
     os.system('cls')
