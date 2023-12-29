@@ -5,8 +5,6 @@ import string
 import secrets
 import inspect
 from colorama import init, Fore, Back, Style
-from threading import Thread
-from typing import Callable
 
 
 init()
