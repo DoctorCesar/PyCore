@@ -36,9 +36,24 @@ def write(text, delay=0.075,back=True):
     if back:
         print()
 
-
 def embed(text: str, fore=Fore.WHITE, back=Back.BLACK):
-    return(fore + back + text + Style.RESET_ALL)
+    colorDict = {"red":Fore.RED,
+                "green":Fore.GREEN,
+                "yellow":Fore.YELLOW,
+                "blue":Fore.BLUE,
+                "magenta":Fore.MAGENTA,
+                "cyan":Fore.CYAN,
+                "white":Fore.WHITE,
+                "black":Fore.BLACK,
+                "lightred":Fore.LIGHTRED_EX,
+                "lightgreen":Fore.LIGHTGREEN_EX,
+                "lightyellow":Fore.LIGHTYELLOW_EX,
+                "lightblue":Fore.LIGHTBLUE_EX,
+                "lightmagenta":Fore.LIGHTMAGENTA_EX,
+                "lightcyan":Fore.LIGHTCYAN_EX,
+                "lightwhite":Fore.LIGHTWHITE_EX,
+                "reset":Style.RESET_ALL}
+    return(colorDict[fore] + colorDict[back] + text + Style.RESET_ALL)
 
 def prompt(type="str",text=">>>"):
     while True:
