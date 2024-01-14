@@ -1,15 +1,16 @@
-import os
-import sys
-import time
-import string
-import secrets
-import inspect
 from colorama import init, Fore, Back, Style
+from typing import Any
+import inspect
+import secrets
+import string
+import time
+import sys
+import os
 
 
 init()
 
-def commonList(list1,list2,returnCommon=False):
+def commonList(list1,list2,returnCommon=False) -> tuple[bool,list[int]] | tuple[bool,None]:
     common = []
     for position in list1:
         if position in list2:    
@@ -25,10 +26,10 @@ def commonList(list1,list2,returnCommon=False):
     else:    
         return(False)
 
-def clear():
+def clear() -> None:
     os.system('cls')
 
-def write(text, delay=0.075,back=True):
+def write(text, delay=0.075,back=True) -> None:
     for char in text:
         sys.stdout.write(char)
         sys.stdout.flush()
@@ -36,8 +37,8 @@ def write(text, delay=0.075,back=True):
     if back:
         print()
 
-def embed(text: str, fore=Fore.WHITE, back=Back.BLACK):
-    colorDict = {"red":Fore.RED,
+def embed(text: str, fore:str="white", back:str="black") -> str:
+    foreDict = {"red":Fore.RED,
                 "green":Fore.GREEN,
                 "yellow":Fore.YELLOW,
                 "blue":Fore.BLUE,
@@ -53,9 +54,25 @@ def embed(text: str, fore=Fore.WHITE, back=Back.BLACK):
                 "lightcyan":Fore.LIGHTCYAN_EX,
                 "lightwhite":Fore.LIGHTWHITE_EX,
                 "reset":Style.RESET_ALL}
-    return(colorDict[fore] + colorDict[back] + text + Style.RESET_ALL)
+    backDict = {"red":Back.RED,
+                "green":Back.GREEN,
+                "yellow":Back.YELLOW,
+                "blue":Back.BLUE,
+                "magenta":Back.MAGENTA,
+                "cyan":Back.CYAN,
+                "white":Back.WHITE,
+                "black":Back.BLACK,
+                "lightred":Back.LIGHTRED_EX,
+                "lightgreen":Back.LIGHTGREEN_EX,
+                "lightyellow":Back.LIGHTYELLOW_EX,
+                "lightblue":Back.LIGHTBLUE_EX,
+                "lightmagenta":Back.LIGHTMAGENTA_EX,
+                "lightcyan":Back.LIGHTCYAN_EX,
+                "lightwhite":Back.LIGHTWHITE_EX,
+                "reset":Style.RESET_ALL}
+    return(foreDict[fore] + backDict[back] + text + Style.RESET_ALL)
 
-def prompt(type="str",text=">>>"):
+def prompt(type="str",text=">>>") -> str | int | float:
     while True:
         if type=="str":
             return(str(input(text)))
@@ -70,7 +87,7 @@ def prompt(type="str",text=">>>"):
             except: 
                 print(embed("Value must be a number", Fore.RED))
 
-def password(length=8):
+def password(length=8) -> str:
     char = string.ascii_letters + string.digits + string.punctuation + " "
     while True:
         password = ''.join(secrets.choice(char) for _ in range(length))
@@ -86,13 +103,13 @@ def password(length=8):
                 break
     return(password)
 
-def title(title :str):
+def title(title :str) -> None:
     os.system(f'title {title}')
 
-def windowSize(lenght,height):
+def windowSize(lenght,height) -> None:
     os.system(f'mode con: cols={lenght} lines={height}')
 
-def getFunctionParameters():
+def getFunctionParameters() -> dict[str, Any]:
     calling_frame = inspect.currentframe().f_back
     name_parent_function = calling_frame.f_code.co_name
     parameters = inspect.signature(calling_frame.f_globals[name_parent_function]).parameters
