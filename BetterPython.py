@@ -116,7 +116,7 @@ def getFunctionParameters() -> dict[str, Any]:
     parameters_value = {name: calling_frame.f_locals[name] for name in parameters}
     return parameters_value
 
-def pnumber(n,roundPrecision:int=3,valueLetter:dict={1000:'K',10**6:'M',10**9:'B',10**12:'T'}) -> str:
+def pnumber(n,roundPrecision:int=3,valueLetter:dict={1000:'K',10**6:'M',10**9:'B',10**12:'T', 10**15:'Q', 10**18:'C', 10**21:'S'}) -> str:
     if not (type(n) == float or type(n) == int):
         raise TypeError('Parameter should be a float or an integer')
     toReturn = ''
@@ -126,6 +126,9 @@ def pnumber(n,roundPrecision:int=3,valueLetter:dict={1000:'K',10**6:'M',10**9:'B
         else:
             break
     return toReturn
+
+def pn(n, roundPrecision:int=3,valueLetter:dict={1000:'K',10**6:'M',10**9:'B',10**12:'T', 10**15:'Q', 10**18:'C', 10**21:'S'}) -> str: # Alias for pnumber
+    return pnumber(n,roundPrecision,valueLetter)
 
 def spaceship(val1:int|float, val2:int|float) -> int:
     if val1 == val2:
