@@ -1,4 +1,4 @@
-from colorama import init, Fore, Back, Style
+from colorama import Fore, Back, Style; import colorama
 from typing import Any
 import inspect
 import secrets
@@ -8,7 +8,7 @@ import sys
 import os
 
 
-init()
+colorama.init()
 
 def commonList(list1,list2,returnCommon=False) -> tuple[bool,list[int]] | tuple[bool,None]:
     common = []
@@ -126,6 +126,41 @@ def pnumber(n,roundPrecision:int=3,valueLetter:dict={1000:'K',10**6:'M',10**9:'B
         else:
             break
     return toReturn
+
+def spaceship(val1:int|float, val2:int|float) -> int:
+    if val1 == val2:
+        return 0
+    elif val1 > val2:
+        return 1
+    else:
+        return -1
+
+def spsh(val1:int|float, val2:int|float) -> int: # Alias for spaceship
+    return spaceship(val1,val2)
+
+class ToPrintClass:
+    def __init__(self,text:Any) -> None:
+        self.text = str(text)
+    
+    def __str__(self) -> str:
+        return self.text
+    
+    def get(self) -> Any:
+        return self.text
+    
+    def set(self,value) -> None:
+        self.text = value
+
+    def add(self, value) -> None:
+        self.text += value
+
+    def c(self) -> None:
+        print(self.text)
+    
+    def commit(self) -> None:
+        print(self.text)
+
+toPrint = ToPrintClass("")
 
 
 if __name__ == '__main__':
