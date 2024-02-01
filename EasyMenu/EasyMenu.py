@@ -1,17 +1,21 @@
+import os
 from typing import Any
 import inquirer
 
 class Menu:
-    def __init__(self, message:str,*choices:Any) -> None:
+    def __init__(self, message:str,*choices:Any, clear:bool=True) -> None:
         self.message = message
         for i in choices:
             if isinstance(i, SubMenu):
                 i.commit(self)
         
-        self.choices = choices
+        self.choices = list(choices)
+        self.clear = clear
     
     def __call__(self) -> Any | None:
-        
+        if self.clear:
+            os.system('cls' if os.name == 'nt' else 'clear')
+                        
         choicesDict = {i.text : i for i in self.choices}
         
         question = [inquirer.List("menu",self.message,choices=[i.text for i in self.choices])]
@@ -29,7 +33,7 @@ class Menu:
             
 
 class SubMenu:
-    def __init__(self, text:str, message:str, *choices:Any):
+    def __init__(self, text:str, message:str, *choices:Any, clear:bool=True) -> None:
         self.text = text
         self.message = message
         
@@ -38,11 +42,15 @@ class SubMenu:
                 i.commit(self)
         
         self.choices = list(choices)
+        self.clear = clear
         
     def commit(self, parent_menu):
         self.choices.insert(0, Parent(parent_menu))
         
     def __call__(self):
+        if self.clear:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            
         choicesDict = {i.text : i for i in self.choices}
         
         question = [inquirer.List("menu",self.message,choices=[i.text for i in self.choices])]
