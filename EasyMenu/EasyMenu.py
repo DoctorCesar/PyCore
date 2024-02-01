@@ -47,7 +47,6 @@ class SubMenu:
         
         question = [inquirer.List("menu",self.message,choices=[i.text for i in self.choices])]
         answer = choicesDict[inquirer.prompt(question)["menu"]]
-        print(f"Answer: {type(answer)}")
         if isinstance(answer,SubMenu):
             return answer()
         elif isinstance(answer, Parent):
