@@ -16,15 +16,11 @@ class Menu:
         
         question = [inquirer.List("menu",self.message,choices=[i.text for i in self.choices])]
         answer = choicesDict[inquirer.prompt(question)["menu"]]
-        print(f"Answer: {type(answer)}")
         if isinstance(answer,SubMenu):
-            print("SubMenu")
             return answer()
         elif isinstance(answer, Parent):
-            print("Parent")
             return answer.parent_menu()
         elif isinstance(answer, Output):
-            print("Output")
             return answer.output_code
             
 
