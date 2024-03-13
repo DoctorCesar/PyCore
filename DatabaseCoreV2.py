@@ -36,10 +36,10 @@ class DbTable:
         toCommit = toCommit.rstrip(',')
         toCommit += ')'
 
-        data = []
+        data = [values.values()]
         alreadyExist = True
         for key in values:
-            data.append(values[key])
+            # data.append(values[key])
             alreadyExist = alreadyExist and self.exist(key,values[key])
             if not alreadyExist:
                 break
@@ -54,7 +54,7 @@ class DbTable:
             self.conn.commit()
 
     
-    def deleteData(self,colomn: str,value: Any):
+    def deleteData(self,colomn:str, value:Any):
         # Delete all rows where value of the colomn match the inputed value
         toDelete = f'DELETE FROM {self.name} WHERE {colomn} = ?;'
 
