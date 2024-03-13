@@ -6,8 +6,7 @@ class DbTable:
         self.file = file
         self.name = name
         
-        self.dataStructure = {"id": int}
-        self.dataStructure.update(colomn)
+        self.dataStructure = {"id": int}.update(colomn)
         
         self.conn = sql.connect(self.file,check_same_thread=check_same_thread)
         self.cursor = self.conn.cursor()
