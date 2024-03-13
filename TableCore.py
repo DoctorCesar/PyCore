@@ -8,6 +8,8 @@ class Table:
         
         self.grid = [[default_value for _ in range(rows)] for _ in range(columns)]
         
+        self.iter_index = 0
+        
     def __str__(self) -> str:
         toReturn = ""
         max_len = max(len(str(value)) for row in self.grid for value in row)
@@ -30,6 +32,18 @@ class Table:
             return self.grid == other.grid
         else:
             return False
+    
+    def __iter__(self) -> Self:
+        return self
+    
+    def __next__(self) -> Any:
+        if self.iter_index < self.rows * self.columns:
+            row = self.iter_index // self.columns
+            col = self.iter_index % self.columns
+            self.iter_index += 1
+            return self[row, col]
+        else:
+            raise StopIteration
     
     def fill(self, value:Any=None) -> None:
         if value == None:

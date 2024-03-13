@@ -1,2 +1,5 @@
-PrinterCore/__pycache__/PrinterCore.cpython-312.pyc
 test.py
+__pycache__/DatabaseCoreV2.cpython-312.pyc
+item.db
+test.db
+.gitignore
