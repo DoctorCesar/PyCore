@@ -41,6 +41,8 @@ class DbTable:
         for key in values:
             data.append(values[key])
             alreadyExist = alreadyExist and self.exist(key,values[key])
+            if not alreadyExist:
+                break
         data = tuple(data)
 
         
