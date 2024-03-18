@@ -2,22 +2,22 @@ from typing import Any
 import sqlite3 as sql
 
 class DbTable:
-    def __init__(self,file,name,colomn:dict,check_same_thread:bool=True) -> None:
+    def __init__(self,file,name,column:dict,check_same_thread:bool=True) -> None:
         self.file = file
         self.name = name
         
-        self.dataStructure = {"id": int}.update(colomn)
+        self.dataStructure = {"id": int}.update(column)
         
         self.conn = sql.connect(self.file,check_same_thread=check_same_thread)
         self.cursor = self.conn.cursor()
 
         toCommit = f'''CREATE TABLE IF NOT EXISTS {self.name} (id INTEGER PRIMARY KEY'''
-        for key in colomn.keys():
-            if colomn[key] == int : colomn[key] = 'INTEGER'
-            if colomn[key] == str : colomn[key] = 'TEXT'
-            if colomn[key] == float : colomn[key] = 'REAL'
+        for key in column.keys():
+            if column[key] == int : column[key] = 'INTEGER'
+            if column[key] == str : column[key] = 'TEXT'
+            if column[key] == float : column[key] = 'REAL'
 
-            toCommit += f''',{key} {colomn[key]}'''
+            toCommit += f''',{key} {column[key]}'''
             
         toCommit += ''')'''
         self.cursor.execute(toCommit)
@@ -54,9 +54,9 @@ class DbTable:
             self.conn.commit()
 
     
-    def deleteData(self,colomn:str, value:Any):
-        # Delete all rows where value of the colomn match the inputed value
-        toDelete = f'DELETE FROM {self.name} WHERE {colomn} = ?;'
+    def deleteData(self,column:str, value:Any):
+        # Delete all rows where value of the column match the inputed value
+        toDelete = f'DELETE FROM {self.name} WHERE {column} = ?;'
 
         self.cursor.execute(toDelete , (value,))
         self.conn.commit()
@@ -79,8 +79,8 @@ class DbTable:
         return toReturn
     
     
-    def requestData(self,colomn,value,requestedColomn:str = '*'):
-        select_query = f'''SELECT {requestedColomn} FROM {self.name} WHERE {colomn} = ?;'''
+    def requestData(self,column,value,requestedcolumn:str = '*'):
+        select_query = f'''SELECT {requestedcolumn} FROM {self.name} WHERE {column} = ?;'''
         self.cursor.execute(select_query,(value,))
         data = self.cursor.fetchall()
         if data:
@@ -94,19 +94,21 @@ class DbTable:
         else:
             return None
     
-    def exist(self,colomn:str,value:Any) -> bool:
-        select_query = f'''SELECT * FROM {self.name} WHERE {colomn} = ?;'''
+    def exist(self,column:str,value:Any) -> bool:
+        select_query = f'''SELECT * FROM {self.name} WHERE {column} = ?;'''
         self.cursor.execute(select_query,(value,))
         data = self.cursor.fetchall()
         return True if data else False
     
-    def createColomn(self,colomnName:str,colomnType:Any):
-        toCommit = f'''ALTER TABLE {self.name} ADD COLUMN {colomnName} {colomnType}'''
+    def createColumn(self,columnName:str,columnType:Any):
+        toCommit = f'''ALTER TABLE {self.name} ADD COLUMN {columnName} {columnType}'''
+        self.dataStructure[columnName] = columnType
         self.cursor.execute(toCommit)
         self.conn.commit()
     
-    def deleteColomn(self,colomnName:str):
-        toCommit = f'''ALTER TABLE {self.name} DROP COLUMN {colomnName}'''
+    def deleteColumn(self,columnName:str):
+        toCommit = f'''ALTER TABLE {self.name} DROP COLUMN {columnName}'''
+        self.dataStructure.pop(columnName)
         self.cursor.execute(toCommit)
         self.conn.commit()
     
@@ -122,12 +124,11 @@ class DbTable:
                 toCreate.append((key,value))
                 
         for key, value in toDelete:
-            self.deleteColomn(key)
-            self.dataStructure.pop(key)
+            self.deletecolumn(key)
             
         for key,value in toCreate:
-            self.createColomn(key,value)
-            self.dataStructure[key] = value
+            self.createcolumn(key,value)
+
         
     
     def closeConnection(self):
