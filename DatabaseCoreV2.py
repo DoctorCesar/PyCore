@@ -6,8 +6,7 @@ class DbTable:
         self.file = file
         self.name = name
         
-        self.dataStructure = {"id": int}
-        self.dataStructure.update(colomn)
+        self.dataStructure = {"id": int}.update(colomn)
         
         self.conn = sql.connect(self.file,check_same_thread=check_same_thread)
         self.cursor = self.conn.cursor()
@@ -37,11 +36,13 @@ class DbTable:
         toCommit = toCommit.rstrip(',')
         toCommit += ')'
 
-        data = []
+        data = [values.values()]
         alreadyExist = True
         for key in values:
-            data.append(values[key])
+            # data.append(values[key])
             alreadyExist = alreadyExist and self.exist(key,values[key])
+            if not alreadyExist:
+                break
         data = tuple(data)
 
         
@@ -53,7 +54,7 @@ class DbTable:
             self.conn.commit()
 
     
-    def deleteData(self,colomn: str,value: Any):
+    def deleteData(self,colomn:str, value:Any):
         # Delete all rows where value of the colomn match the inputed value
         toDelete = f'DELETE FROM {self.name} WHERE {colomn} = ?;'
 
@@ -98,6 +99,36 @@ class DbTable:
         self.cursor.execute(select_query,(value,))
         data = self.cursor.fetchall()
         return True if data else False
+    
+    def createColomn(self,colomnName:str,colomnType:Any):
+        toCommit = f'''ALTER TABLE {self.name} ADD COLUMN {colomnName} {colomnType}'''
+        self.cursor.execute(toCommit)
+        self.conn.commit()
+    
+    def deleteColomn(self,colomnName:str):
+        toCommit = f'''ALTER TABLE {self.name} DROP COLUMN {colomnName}'''
+        self.cursor.execute(toCommit)
+        self.conn.commit()
+    
+    def updateStructure(self,newStructure:dict):
+        toDelete = []
+        for key,value in self.dataStructure.items():
+            if key not in newStructure:
+                toDelete.append((key,value))
+        
+        toCreate = []
+        for key,value in newStructure.items():
+            if key not in self.dataStructure:
+                toCreate.append((key,value))
+                
+        for key, value in toDelete:
+            self.deleteColomn(key)
+            self.dataStructure.pop(key)
+            
+        for key,value in toCreate:
+            self.createColomn(key,value)
+            self.dataStructure[key] = value
+        
     
     def closeConnection(self):
         self.conn.close()
