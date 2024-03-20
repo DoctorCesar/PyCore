@@ -6,11 +6,22 @@ class DbTable:
         self.file = file
         self.name = name
         
-        self.dataStructure = {"id": int}.update(column)
         
         self.conn = sql.connect(self.file,check_same_thread=check_same_thread)
         self.cursor = self.conn.cursor()
 
+        self.dataStructure = {}
+        self.dataStructure["id"] = int
+        for key,value in column.items():
+            self.dataStructure[key] = value
+        
+        self.cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{name}';")
+        if not self.cursor.fetchone() is None:
+            self.cursor.execute(f"PRAGMA table_info('{name}')")
+            for col in self.cursor.fetchall():
+                self.dataStructure[col[1]] = col[2]
+        
+        
         toCommit = f'''CREATE TABLE IF NOT EXISTS {self.name} (id INTEGER PRIMARY KEY'''
         for key in column.keys():
             if column[key] == int : column[key] = 'INTEGER'
@@ -36,10 +47,9 @@ class DbTable:
         toCommit = toCommit.rstrip(',')
         toCommit += ')'
 
-        data = [values.values()]
+        data = list(values.values())
         alreadyExist = True
         for key in values:
-            # data.append(values[key])
             alreadyExist = alreadyExist and self.exist(key,values[key])
             if not alreadyExist:
                 break
