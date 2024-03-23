@@ -47,7 +47,7 @@ class Logger:
         if self.displayInConsole and self.logLevel <= 2:
             print(f"{self.colorDict["info"]}{self.titleDict["info"]}{currentTime} -> {msg}")
 
-    def warn(self, msg: str):
+    def warning(self, msg: str):
         if self.showTime:
             currentTime = strftime(self.timeSyntax)
         else:
@@ -60,7 +60,7 @@ class Logger:
         if self.displayInConsole and self.logLevel <= 3:
             print(f"{self.colorDict["warn"]}{self.titleDict["warn"]}{currentTime} -> {msg}")
 
-    def crit(self, msg: str):
+    def critical(self, msg: str):
         if self.showTime:
             currentTime = strftime(self.timeSyntax)
         else:
