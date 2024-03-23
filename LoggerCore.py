@@ -85,10 +85,10 @@ class MultiLogger:
         for logger in self.loggers:
             logger.info(msg)
     
-    def warn(self, msg: str):
+    def warning(self, msg: str):
         for logger in self.loggers:
             logger.warn(msg)
     
-    def crit(self, msg: str):
+    def critical(self, msg: str):
         for logger in self.loggers:
             logger.crit(msg)
