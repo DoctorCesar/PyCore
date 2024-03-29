@@ -3,3 +3,6 @@ __pycache__/DatabaseCoreV2.cpython-312.pyc
 item.db
 test.db
 .gitignore
+test.ipynb
+__pycache__/LoggerCore.cpython-312.pyc
+testDbCoreV2.py
