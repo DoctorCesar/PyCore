@@ -26,6 +26,9 @@ def commonList(list1,list2,returnCommon=False) -> tuple[bool,list[int]] | tuple[
     else:    
         return(False)
 
+def differenceList(list1,list2) -> list:
+    return list(set(list1) - set(list2)) + list(set(list2) - set(list1))
+
 def clear() -> None:
     os.system('cls')
 

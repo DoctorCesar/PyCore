@@ -6,3 +6,7 @@ test.db
 test.ipynb
 __pycache__/LoggerCore.cpython-312.pyc
 testDbCoreV2.py
+__pycache__/LanguageCore.cpython-312.pyc
+__pycache__/PyCore.cpython-312.pyc
+__pycache__/test LanguageCore.cpython-312.pyc
+test LanguageCore.py
