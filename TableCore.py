@@ -15,7 +15,7 @@ class Table:
         max_len = max(len(str(value)) for row in self.grid for value in row)
         for row in self.grid:
             for value in row:
-                toReturn += str(value).center(max_len)
+                toReturn += str(value).center(max_len+1)
             toReturn += "\n"
         return toReturn
 
